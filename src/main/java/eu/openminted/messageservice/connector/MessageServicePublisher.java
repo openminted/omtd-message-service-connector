@@ -10,19 +10,23 @@ import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author galanisd
  *
  */
-public class MessageServiceConnector {
+public class MessageServicePublisher {
+
+	private static final Logger log = LoggerFactory.getLogger(MessageServicePublisher.class);
 
 	private String messagesHost;
 	private TopicConnection connection = null;
 	private TopicSession session = null;
 
 
-	public MessageServiceConnector(String messagesHost) {
+	public MessageServicePublisher(String messagesHost) {
 		this.messagesHost = messagesHost;
 	}
 
