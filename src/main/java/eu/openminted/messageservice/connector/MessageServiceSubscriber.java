@@ -22,7 +22,8 @@ public class MessageServiceSubscriber implements MessageListener {
 
 	private String messagesHost;
 	private TopicConnection connection = null;
-
+	private Session session;
+	
 	public MessageServiceSubscriber(String messagesHost) {
 		this.messagesHost = messagesHost;
 
@@ -30,20 +31,25 @@ public class MessageServiceSubscriber implements MessageListener {
 		try {
 			connection = connectionFactory.createTopicConnection();
 			connection.start();
-
-			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-			Destination dest = session.createTopic(TopicsRegistry.workflowsExecution);
-			MessageConsumer responseConsumer = session.createConsumer(dest);
-
-			// This class will handle the messages to the temp queue as well
-			responseConsumer.setMessageListener(this);
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			
 		} catch (JMSException e) {
 			log.info("error");
 		}
 
 	}
 
+	public void addTopic(String topic){
+		try {
+			Destination targetTopic = session.createTopic(topic);
+			MessageConsumer responseConsumer = session.createConsumer(targetTopic);
+			responseConsumer.setMessageListener(this);		
+		} catch (JMSException e) {
+			log.info("error");
+		}
+
+	}
+	
 	@Override
 	public void onMessage(Message msg) {
         try {
