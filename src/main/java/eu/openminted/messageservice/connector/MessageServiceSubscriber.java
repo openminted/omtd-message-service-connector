@@ -47,8 +47,8 @@ public class MessageServiceSubscriber implements MessageListener {
 	@Override
 	public void onMessage(Message msg) {
         try {
-        	log.info(msg.getJMSType() + " " + msg.getJMSMessageID());
-        	log.info(msg.toString());
+        	log.info("onMessage:" + msg.getJMSType() + " " + msg.getJMSMessageID());
+        	log.info("onMessage:" + msg.toString());
 	        // if (message instanceof TextMessage) {
 	        // TextMessage textMessage = (TextMessage) message;
 	        // messageText = textMessage.getText();
