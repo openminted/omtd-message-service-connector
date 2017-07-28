@@ -20,6 +20,8 @@ public class MessageServiceSubscriber implements MessageListener {
 
 	private static final Logger log = LoggerFactory.getLogger(MessageServiceSubscriber.class);
 
+	private MessagesHandler messagesHandler;
+	
 	private String messagesHost;
 	private TopicConnection connection = null;
 	private Session session;
@@ -36,7 +38,6 @@ public class MessageServiceSubscriber implements MessageListener {
 		} catch (JMSException e) {
 			log.info("error");
 		}
-
 	}
 
 	public void addTopic(String topic){
@@ -50,6 +51,14 @@ public class MessageServiceSubscriber implements MessageListener {
 
 	}
 	
+	public MessagesHandler getMessagesHandler() {
+		return messagesHandler;
+	}
+
+	public void setMessagesHandler(MessagesHandler messagesHandler) {
+		this.messagesHandler = messagesHandler;
+	}
+
 	@Override
 	public void onMessage(Message msg) {
         try {
@@ -59,6 +68,9 @@ public class MessageServiceSubscriber implements MessageListener {
 	        // TextMessage textMessage = (TextMessage) message;
 	        // messageText = textMessage.getText();
 	        // System.out.println("messageText = " + messageText);
+        	if(messagesHandler!=null){
+        		messagesHandler.handleMessage(msg);
+        	}
         	
         }catch(JMSException e){
         	log.info("error on receiving message");
