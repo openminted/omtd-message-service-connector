@@ -6,6 +6,7 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.jms.TopicConnection;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -64,10 +65,11 @@ public class MessageServiceSubscriber implements MessageListener {
         try {
         	log.info("onMessage:" + msg.getJMSType() + " " + msg.getJMSMessageID());
         	log.info("onMessage:" + msg.toString());
-	        // if (message instanceof TextMessage) {
-	        // TextMessage textMessage = (TextMessage) message;
-	        // messageText = textMessage.getText();
-	        // System.out.println("messageText = " + messageText);
+	        if (msg instanceof TextMessage) {
+	        	TextMessage textMessage = (TextMessage) msg;
+	        	log.info("text message:" + textMessage.getText());
+	        }
+	        
         	if(messagesHandler!=null){
         		messagesHandler.handleMessage(msg);
         	}

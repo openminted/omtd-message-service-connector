@@ -13,6 +13,8 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.openminted.messageservice.messages.GSON;
+
 /**
  * @author galanisd
  *
@@ -25,9 +27,11 @@ public class MessageServicePublisher {
 	private TopicConnection connection = null;
 	private TopicSession session = null;
 
+	private GSON gson;
 
 	public MessageServicePublisher(String messagesHost) {
 		this.messagesHost = messagesHost;
+		gson = new GSON();
 	}
 
 	private void init() throws JMSException{
@@ -45,16 +49,22 @@ public class MessageServicePublisher {
 	}
 
 	public void publishMessage(String topicName, String message) throws JMSException {
+		publishMessage(topicName, message);
+	}
+
+	public void publishMessage(String topicName, Object message) throws JMSException {
 		init();
 		// Create topic and publish a message.
 		Topic topic = session.createTopic(topicName);
 		TopicPublisher topicPublisher = session.createPublisher(topic);
-		TextMessage textMsg = session.createTextMessage(message);
+		TextMessage textMsg = session.createTextMessage(gson.getJSON(message));
+		
 		topicPublisher.publish(textMsg);
 		topicPublisher.close();
 		
 		close();
 	}
+
 	
 	public void close() throws JMSException {
 		session.close();
