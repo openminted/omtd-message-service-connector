@@ -30,33 +30,36 @@ public class MessageServicePublisher {
 		this.messagesHost = messagesHost;
 	}
 
-	public void createTopic(String topicName) throws JMSException {
+	private void init() throws JMSException{
 		TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(messagesHost);
 		connection = connectionFactory.createTopicConnection();
-		session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-
+		session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);	
 		connection.start();
+	}
+	
+	public void createTopic(String topicName) throws JMSException {
+		init();
+		// Create topic
 		session.createTopic(topicName);
-		session.close();
-
-		if (connection != null) {
-			connection.close();
-		}
+		close();
 	}
 
 	public void publishMessage(String topicName, String message) throws JMSException {
-
-		TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(messagesHost);
-		connection = connectionFactory.createTopicConnection();
-		session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-
-		connection.start();
+		init();
+		// Create topic and publish a message.
 		Topic topic = session.createTopic(topicName);
-
-		TopicPublisher send = session.createPublisher(topic);
-		TextMessage tm = session.createTextMessage(message);
-		send.publish(tm);
-		send.close();
-
+		TopicPublisher topicPublisher = session.createPublisher(topic);
+		TextMessage textMsg = session.createTextMessage(message);
+		topicPublisher.publish(textMsg);
+		topicPublisher.close();
+		
+		close();
+	}
+	
+	public void close() throws JMSException {
+		session.close();
+		if (connection != null) {
+			connection.close();
+		}				
 	}
 }
