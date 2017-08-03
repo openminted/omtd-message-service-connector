@@ -3,9 +3,11 @@ package eu.openminted.messageservice.messages;
 public class WorkflowExecutionStatusMessage {
 
 	private String workflowExecutionID;
-	private String workflowID;
-	private String corpusID;
+	private String workflowID;	
 	private String workflowStatus;
+	
+	private String corpusID;
+	private String resultingCorpusID;
 	
 	public WorkflowExecutionStatusMessage(){
 		
@@ -20,6 +22,14 @@ public class WorkflowExecutionStatusMessage {
 		this.workflowStatus = workflowStatus;
 	}
 	
+	public String getResultingCorpusID() {
+		return resultingCorpusID;
+	}
+
+	public void setResultingCorpusID(String resultingCorpusID) {
+		this.resultingCorpusID = resultingCorpusID;
+	}
+
 	public String getWorkflowExecutionID() {
 		return workflowExecutionID;
 	}
