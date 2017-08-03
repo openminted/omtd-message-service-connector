@@ -39,6 +39,7 @@ public class MessageServiceSubscriber implements MessageListener {
 		} catch (JMSException e) {
 			log.info("error");
 		}
+		
 	}
 
 	public void addTopic(String topic){
@@ -79,4 +80,12 @@ public class MessageServiceSubscriber implements MessageListener {
         	// Handle the exception appropriately
         }
 
-}}
+	}
+
+	public void close() throws JMSException {
+		session.close();
+		if (connection != null) {
+			connection.close();
+		}				
+	}
+}
