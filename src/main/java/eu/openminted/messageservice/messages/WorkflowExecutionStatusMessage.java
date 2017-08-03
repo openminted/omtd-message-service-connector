@@ -1,25 +1,28 @@
 package eu.openminted.messageservice.messages;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class WorkflowExecutionStatusMessage {
 
 	private String workflowExecutionID;
 	private String workflowID;	
 	private String workflowStatus;
-	
 	private String corpusID;
 	private String resultingCorpusID;
+	private String userID;
 	
 	public WorkflowExecutionStatusMessage(){
 		
 	}
 	
 	public WorkflowExecutionStatusMessage(String workflowExecutionID, String workflowID, String corpusID,
-			String workflowStatus) {
+			String workflowStatus, String userID) {
 		super();
 		this.workflowExecutionID = workflowExecutionID;
 		this.workflowID = workflowID;
 		this.corpusID = corpusID;
 		this.workflowStatus = workflowStatus;
+		this.userID = userID;
 	}
 	
 	public String getResultingCorpusID() {
@@ -54,6 +57,18 @@ public class WorkflowExecutionStatusMessage {
 	public void setWorkflowStatus(String workflowStatus) {
 		this.workflowStatus = workflowStatus;
 	}
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
 	
-	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+		
+	}
 }
