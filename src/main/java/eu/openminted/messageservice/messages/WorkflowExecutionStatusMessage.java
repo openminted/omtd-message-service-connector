@@ -10,6 +10,7 @@ public class WorkflowExecutionStatusMessage {
 	private String corpusID;
 	private String resultingCorpusID;
 	private String userID;
+	private String error;
 	
 	public WorkflowExecutionStatusMessage(){
 		
@@ -70,5 +71,13 @@ public class WorkflowExecutionStatusMessage {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 		
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 }
